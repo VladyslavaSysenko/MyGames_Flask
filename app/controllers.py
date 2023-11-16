@@ -10,26 +10,26 @@ from utils import apology
 def register_controller(request=request):
     # Ensure username was submitted
     if not request.form.get("username"):
-        return apology("must provide username", 400)
+        return apology("must provide username", 400, "register")
 
     # Query database for username
     user = db.query(User).filter_by(username=request.form.get("username")).first()
 
     # Ensure username doesn't exist
     if user:
-        return apology("username already exists", 400)
+        return apology("username already exists", 400, "register")
 
     # Ensure password was submitted
     if not request.form.get("password"):
-        return apology("must provide password", 400)
+        return apology("must provide password", 400, "register")
 
     # Ensure confirmation password was submitted
     if not request.form.get("confirmation"):
-        return apology("must provide password again", 400)
+        return apology("must provide password again", 400, "register")
 
     # Ensure passwords match
     if request.form.get("password") != request.form.get("confirmation"):
-        return apology("passwords do not match", 400)
+        return apology("passwords do not match", 400, "register")
 
     # Add new user to database
     new_user = User(
@@ -58,18 +58,18 @@ def register_controller(request=request):
 def login_controller(request):
     # Ensure username was submitted
     if not request.form.get("username"):
-        return apology("must provide username", 400)
+        return apology("must provide username", 400, "login")
 
     # Ensure password was submitted
     elif not request.form.get("password"):
-        return apology("must provide password", 400)
+        return apology("must provide password", 400, "login")
 
     # Query database for username
     user = db.query(User).filter_by(username=request.form.get("username")).first()
 
     # Ensure username exists and password is correct
     if not user or not check_password_hash(user.hash, request.form.get("password")):
-        return apology("invalid username and/or password", 400)
+        return apology("invalid username and/or password", 400, "login")
 
     # Remember which user has logged in
     session["user_id"] = user.id
@@ -85,24 +85,19 @@ def my_games_controller():
 
 
 def add_game_controller(request):
-    if request.form.get("date"):
-        day = request.form.get("date")
-    else:
-        day = date.today()
-    if request.form.get("price"):
-        price = request.form.get("price")
-    else:
-        price = None
+    # Add game
+    day = request.form.get("date")
+    price = request.form.get("price")
     # Insert game into database
     new_game = Game(
         id=session["user_id"],
         name=request.form.get("name"),
         review=request.form.get("review"),
         photo=request.form.get("photo"),
-        own_it=True if request.form.get("own_it") == "yes" else False,
+        own_it=True if request.form.get("own_it") == "True" else False,
         rating=request.form.get("rating"),
-        price=price,
-        date=day,
+        price=price if price != "" else None,
+        date=day if day != "" else date.today(),
     )
     db.add(new_game)
     db.commit()
@@ -111,22 +106,20 @@ def add_game_controller(request):
 
 
 def sort_games_controller(request):
-    if request.form.get("sort_option_buy"):
-        # Use SQLAlchemy query syntax for filtering by own_it
-        games = (
-            db.query(Game)
-            .filter_by(id=session["user_id"], own_it=request.form.get("sort_option_buy"))
-            .all()
-        )
-        sorted_names = {"yes": "Own it", "no": "Don't own it"}
+    sort_buy = request.form.get("sort_option_buy")
+    own_it = True if sort_buy == "True" else False
+    if sort_buy:
+        # Get games filtering by own_it
+        games = db.query(Game).filter_by(id=session["user_id"], own_it=own_it).all()
+        print
         return render_template(
             "mygames.html",
             games=games,
-            sort_name=sorted_names[request.form.get("sort_option_buy")],
+            sort_name="Own it" if sort_buy else "Don't own it",
             owning="yes",
         )
     else:
-        # Use SQLAlchemy query syntax for ordering by the specified column
+        # Order by the specified column
         sort_option = request.form.get("sort_option")
         # Extract the column and order from the selected sort_option
         column, order = sort_option.rsplit("_", 1)
@@ -151,7 +144,7 @@ def sort_games_controller(request):
                 .all()
             )
 
-        # for sorted by button
+        # For sorted by button
         sorted_names = {
             "name_asc": "name, A-Z",
             "name_desc": "name, Z-A",
@@ -189,6 +182,7 @@ def add_site_controller(request):
 
 
 def delete_site_controller(request):
+    # Delete site
     site_id = request.form.get("site_id")
     db.query(Site).filter_by(id=session["user_id"], site_id=site_id).delete()
     db.commit()
