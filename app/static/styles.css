@@ -68,6 +68,7 @@ table {
 
 td {
     text-align: center;
+    vertical-align: middle;
 }
 
 img {
@@ -95,7 +96,7 @@ img {
 
 /* add a game */
 
-.modal-content {
+#addGameModal .modal-content {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -108,7 +109,7 @@ img {
     outline: 0;
 }
 
-.modal-dialog {
+#addGameModal .modal-dialog {
     max-width: 800px;
 }
 
@@ -217,8 +218,8 @@ background-color: #F9E2FF;
     opacity:1;
     }
 
-  /* Tooltip text */
-  .tooltiptext {
+/* Tooltip text */
+.tooltiptext {
     visibility: hidden;
     width: 380px;
     top: 130%;
@@ -235,8 +236,8 @@ background-color: #F9E2FF;
     z-index: 1;
   }
 
-  /* Show the tooltip text when you mouse over the tooltip container */
-  .tooltip:hover .tooltiptext {
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
     visibility: visible;
   }
 
@@ -266,9 +267,36 @@ background-color: #F9E2FF;
 
 .table.site{
     font-size:23px;
-    border: 4mm ridge rgba(111, 255, 89, .8);
+    border: 4mm ridge rgba(3, 253, 220, 0.679);
 }
 
 .site td{
     border-style: none;
+}
+
+.site td a {
+    min-width:60%; 
+    background-color:#FFF300; 
+    border-color:#FFF300;
+}
+
+
+/* Error picture*/
+
+.modal-content {
+    background-color: #F9E2FF !important;
+    background-clip: padding-box;
+    border: 1px solid #BD50DA;
+    border-radius: 0.3rem;
+}
+
+.modal-body img {
+    border: none!important;
+    padding: 2rem;
+}
+
+
+/* Register and Login*/
+#form_register_login div input {
+    width: 40%;
 }

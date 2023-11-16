@@ -14,7 +14,7 @@ def login_required(f):
 
 
 # apology
-def apology(message, code):
+def apology(message, code, template):
     def escape(s):
         for old, new in [
             ("-", "--"),
@@ -29,4 +29,4 @@ def apology(message, code):
             s = s.replace(old, new)
         return s
 
-    return render_template("apology.html", bottom=escape(message))
+    return render_template(f"{template}.html", error_text=escape(message))
