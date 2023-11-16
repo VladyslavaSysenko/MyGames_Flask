@@ -2,7 +2,7 @@ from flask import redirect, render_template, session, request
 from sqlalchemy import func
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import date
-from models import User, Game, Site, DefaultSite
+from models import User, Game, Site, default_sites
 from app import db
 from utils import apology
 
@@ -39,17 +39,13 @@ def register_controller(request=request):
         ),
     )
     db.add(new_user)
+
+    # Add default sites
+    new_user.site.extend(default_sites)
     db.commit()
 
     # Remember which user has logged in
     session["user_id"] = new_user.id
-
-    # Add default sites using SQLAlchemy syntax
-    default_sites = db.query(DefaultSite).all()
-    for default_site in default_sites:
-        new_user_site = Site(id=new_user.id, name=default_site.name, url=default_site.url)
-        db.add(new_user_site)
-    db.commit()
 
     # Redirect user to home page
     return redirect("/")
@@ -108,22 +104,20 @@ def add_game_controller(request):
 def sort_games_controller(request):
     sort_buy = request.form.get("sort_option_buy")
     own_it = True if sort_buy == "True" else False
+    # Get games filtering by own_it
     if sort_buy:
-        # Get games filtering by own_it
         games = db.query(Game).filter_by(id=session["user_id"], own_it=own_it).all()
-        print
         return render_template(
             "mygames.html",
             games=games,
             sort_name="Own it" if sort_buy else "Don't own it",
             owning="yes",
         )
+    # Order by the specified column
     else:
-        # Order by the specified column
         sort_option = request.form.get("sort_option")
         # Extract the column and order from the selected sort_option
         column, order = sort_option.rsplit("_", 1)
-
         if column == "name":
             games = (
                 db.query(Game)
@@ -177,7 +171,6 @@ def add_site_controller(request):
     )
     db.add(new_site)
     db.commit()
-    # Redirect user to list of his games
     return redirect("/searchgames")
 
 

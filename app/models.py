@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, Date, Boolean, ForeignKey
 from sqlalchemy_utils import URLType
-from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import DeclarativeBase, relationship
 
 
 class Base(DeclarativeBase):
@@ -13,6 +13,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String, unique=True, nullable=False)
     hash = Column(String, nullable=False)
+    site = relationship("Site", back_populates="user")
 
 
 # Define Game model
@@ -36,11 +37,15 @@ class Site(Base):
     id = Column(Integer, ForeignKey("users.id"), nullable=False)
     name = Column(String, nullable=False)
     url = Column(URLType, nullable=False)
+    user = relationship("User", back_populates="site")
 
 
-# Define DefaultSite model
-class DefaultSite(Base):
-    __tablename__ = "default_sites"
-    site_id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    url = Column(URLType, nullable=False)
+# Create default sites
+default_sites = [
+    Site(name="DOMIGR", url="https://domigr.com.ua/ua/"),
+    Site(name="Nastolka", url="https://nastolka.com.ua/uk"),
+    Site(name="Ігромаг", url="https://desktopgames.com.ua/ua/"),
+    Site(name="GEEKACH", url="https://geekach.com.ua/"),
+    Site(name="Lord of Boards", url="https://lordofboards.com.ua/"),
+    Site(name="Igrarium", url="https://igrarium.com.ua/"),
+]
