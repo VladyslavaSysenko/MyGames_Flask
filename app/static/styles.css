@@ -179,7 +179,7 @@ background-color: #F9E2FF;
 }
 
 #box3{
-    margin: 150px auto auto auto;
+    margin: 140px auto auto auto;
     width: 400px;
 
 }
@@ -196,7 +196,7 @@ background-color: #F9E2FF;
 #player_button, #order_button {
     font-size: 1.7rem;
     padding: 0.7rem 1.3rem;
-    margin: auto;
+    margin: 0 auto 10px auto;
 }
 
 .boxes {
@@ -238,7 +238,7 @@ background-color: #F9E2FF;
     top: 130%;
     left: 50%;
     margin-left: -360px;
-    background-color: #E6B9FF;
+    background-color: #e0a9fe;
     color: #fff;
     text-align: center;
     padding: 5px;
