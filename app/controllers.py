@@ -77,7 +77,7 @@ def login_controller(request):
 
 def my_games_controller():
     # Show games
-    games = db.query(Game).filter_by(id=session["user_id"]).all()
+    games = db.query(Game).filter_by(id=session["user_id"]).order_by(Game.date.desc()).all()
     return render_template("mygames.html", games=games)
 
 
@@ -107,7 +107,12 @@ def sort_games_controller(request):
     own_it = True if sort_buy == "True" else False
     # Get games filtering by own_it
     if sort_buy:
-        games = db.query(Game).filter_by(id=session["user_id"], own_it=own_it).all()
+        games = (
+            db.query(Game)
+            .filter_by(id=session["user_id"], own_it=own_it)
+            .order_by(Game.date.desc())
+            .all()
+        )
         return render_template(
             "mygames.html",
             games=games,
