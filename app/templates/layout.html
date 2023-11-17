@@ -13,6 +13,8 @@
 
     <link href="/static/styles.css" rel="stylesheet">
 
+    {% block script %}  {% endblock %}
+
     <title>{% block title %}{% endblock %}</title>
 
 </head>
@@ -61,10 +63,10 @@
             </div>
         </div>
     
-        {% if error_text %}
+    {% if error_text %}
         <script>
-        var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), {})
-        myModal.toggle()
+            var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), {})
+            myModal.toggle()
         </script>
     {% endif %}
 </body>
