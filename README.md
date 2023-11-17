@@ -46,3 +46,6 @@ Lastly, you can see a page "More games" with a list of websites where you can se
     * *"mygames.html"* contains main page (My games) where you will see all your games and add a new one.
     * *"random.html"* contains second page (Random) where you can choose a first player or random order of players.
     * *"searchgames.html"* contains third page (More games) where you can collect all sites where you look for new games. At first you will see default websites but feel free to delete them and add ones of your choice.
+
+    ## To start the app:
+    - From root folder run ***python app/app.py***
