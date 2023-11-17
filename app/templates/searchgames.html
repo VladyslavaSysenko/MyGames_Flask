@@ -8,7 +8,7 @@
     <h1>Sites where you can search for a new game</h1>
     <main class="container py-5 text-center">
 
-    <table class="table table-warning site" style="width:45%; margin:auto">
+    <table class="table table-warning site">
         <!-- show sites with preview -->
         <tbody>
             {% for site in sites %}
@@ -35,11 +35,11 @@
                     <div class="modal-body">
                         <!-- name -->
                         <div class="mb-3">
-                            <input autocomplete="off" autofocus required class="form-control mx-auto w-25" name="name" placeholder="Name *" type="text">
+                            <input autocomplete="off" autofocus required class="form-control mx-auto w-50" name="name" placeholder="Name *" type="text">
                         </div>
                         <!-- url -->
                         <div class="mb-3">
-                            <input required autocomplete="off" class="form-control mx-auto w-25" name="url" placeholder="URL *" type="url">
+                            <input required autocomplete="off" class="form-control mx-auto w-50" name="url" placeholder="URL *" type="url">
                         </div>
                     </div>
                     <div class="modal-footer">
