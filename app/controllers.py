@@ -5,6 +5,7 @@ from datetime import date
 from models import User, Game, Site, default_sites
 from app import db
 from utils import apology
+from datetime import datetime
 
 
 def register_controller(request=request):
@@ -93,7 +94,7 @@ def add_game_controller(request):
         own_it=True if request.form.get("own_it") == "True" else False,
         rating=request.form.get("rating"),
         price=price if price != "" else None,
-        date=day if day != "" else date.today(),
+        date=datetime.strptime(day, "%Y-%m-%d") if day != "" else date.today(),
     )
     db.add(new_game)
     db.commit()
