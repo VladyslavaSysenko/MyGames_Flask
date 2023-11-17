@@ -11,8 +11,8 @@ class Base(DeclarativeBase):
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True, nullable=False)
-    hash = Column(String, nullable=False)
+    username = Column(String(150), unique=True, nullable=False)
+    hash = Column(String(150), nullable=False)
     site = relationship("Site", back_populates="user")
 
 
@@ -21,7 +21,7 @@ class Game(Base):
     __tablename__ = "games"
     game_id = Column(Integer, primary_key=True)
     id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    name = Column(String, nullable=False)
+    name = Column(String(150), nullable=False)
     review = Column(Text)
     photo = Column(URLType)
     own_it = Column(Boolean, nullable=False)
@@ -35,7 +35,7 @@ class Site(Base):
     __tablename__ = "sites"
     site_id = Column(Integer, primary_key=True)
     id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    name = Column(String, nullable=False)
+    name = Column(String(150), nullable=False)
     url = Column(URLType, nullable=False)
     user = relationship("User", back_populates="site")
 
