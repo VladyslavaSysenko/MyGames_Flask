@@ -35,4 +35,4 @@ if __name__ == "__main__":
     from urls import bp
 
     app.register_blueprint(bp)
-    app.run()
+    app.run(host="0.0.0.0")
